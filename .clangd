@@ -1,0 +1,29 @@
+InlayHints:
+    Enabled: Yes
+    ParameterNames: No
+    DeducedTypes: Yes
+    Designators: No
+Diagnostics:
+    ClangTidy:
+        Add: [bugprone-*, clang-analyzer-*, concurrency-* cppcoreguidelines-*, misc-*, modernize-*, performance-*, readability-*]
+        Remove: [
+            bugprone-easily-swappable-parameters,
+
+            cppcoreguidelines-pro-type-vararg,
+            
+            misc-const-correctness,
+            misc-no-recursion,
+            misc-non-private-member-variables-in-classes,
+            
+            modernize-loop-convert, # ranges syntax not supported by linter.
+            modernize-use-auto,
+            modernize-use-nodiscard,
+            modernize-use-trailing-return-type,
+            
+            readability-use-anyofallof,
+            readability-braces-around-statements,
+            readability-convert-member-functions-to-static,
+            readability-identifier-length,
+            readability-magic-numbers,
+            readability-uppercase-literal-suffix
+        ]
