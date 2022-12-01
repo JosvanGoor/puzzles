@@ -1,0 +1,104 @@
+#include <iostream>
+#include <vector>
+#include <sstream>
+#include <tuple>
+
+using namespace std;
+
+struct Instr//uction
+{
+    char dir;
+    int steps;
+};
+
+struct Point
+{
+    int x;
+    int y;
+};
+
+void print_grid(vector<char> const &grid, size_t width)
+{
+    for (size_t idx = 0; idx < grid.size(); idx += width)
+    {
+        for (size_t col = 0; col < width; ++col)
+        {
+            cout << grid[idx + col];
+        }
+        cout << "\n";
+    }
+}
+
+size_t index(Point const &point, int width)
+{
+    return point.y * width + point.x;
+}
+
+Point index_to_point(int index, int width)
+{
+    return {index % width, index / width};
+}
+
+Point update(Point point, Instr const &instr)
+{
+    switch(instr.dir)
+    {
+        case 'R':
+            point.x += instr.steps;
+        break;
+        case 'L':
+            point.x -= instr.steps;
+        break;
+        case 'U':
+            point.y -= instr.steps;
+        break;
+        case 'D':
+            point.y += instr.steps;
+        break;
+        default:
+            cout << "unknown direction '" << instr.dir << "'\n";
+    }
+    return point;
+}
+
+auto dimensions(vector<Instr> const &instructions, Point start = {0, 0})
+{
+    Point min{0, 0};
+    Point max{0, 0};
+
+    for (Instr const &instr : instructions)
+    {
+        start = update(start, instr);
+        min.x = std::min(start.x, min.x);
+        max.x = std::max(start.x, max.x);
+        min.y = std::min(start.y, min.y);
+        max.y = std::max(start.y, max.y);
+    }
+
+    return tuple<Point, Point>(min, max);
+}
+
+vector<Instr> parse_instructions(std::string const &line)
+{
+    stringstream ss{line};
+    vector<Instr> rval;
+    char dir;
+    int steps;
+
+    while (ss)
+    {
+        ss >> dir;
+        ss >> steps;
+        rval.push_back({dir, steps});
+        ss >> dir; // parse comma
+    }
+
+    return rval;
+}
+
+vector<Instr> parse_line()
+{
+    string buffer;
+    getline(cin, buffer);
+    return parse_instructions(buffer);
+}

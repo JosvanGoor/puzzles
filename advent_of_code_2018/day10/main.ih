@@ -1,0 +1,49 @@
+#include <algorithm>
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+struct Position
+{
+    int xpos;
+    int ypos;
+
+    Position() : xpos(0), ypos(0) {}
+};
+
+struct Velocity
+{
+    int dx;
+    int dy;
+
+    Velocity() : dx(0), dy(0) {}
+};
+
+inline istream &operator>>(istream &in, Position &position)
+{
+    cin.ignore(10); //ignore 'position=<'
+    cin >> position.xpos;
+    cin.ignore(2); //ignore ', '
+    cin >> position.ypos;
+    cin.ignore(2); //ignore '> '
+    return in;
+}
+
+inline istream &operator>>(istream &in, Velocity &velocity)
+{
+    cin.ignore(10); //ignore 'velocity=<'
+    cin >> velocity.dx;
+    cin.ignore(2); //ignore ', '
+    cin >> velocity.dy;
+    cin.ignore(2); // ignore '>\n'
+    return in;
+}
+
+inline Position operator+(Position pos, Velocity const &vel)
+{
+    pos.xpos += vel.dx;
+    pos.ypos += vel.dy;
+    return pos;
+}

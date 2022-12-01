@@ -1,0 +1,54 @@
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+enum Action
+{
+    TURN_OFF,
+    TURN_ON,
+    TOGGLE
+};
+
+struct Point
+{
+    size_t x;
+    size_t y;
+
+    Point()
+    : x(0), y(0)
+    { }
+};
+
+struct Instruction
+{
+    Action action;
+    Point from;
+    Point through;
+};
+
+istream &operator>>(istream &in, Point &point)
+{
+    cin >> point.x;
+    cin.ignore(1); // ignore ','
+    cin >> point.y;
+
+    return in;
+}
+
+// thrash tier parsing function
+istream &operator>>(istream &in, Instruction &instruction)
+{
+    cin.ignore(5);
+    string command;
+    cin >> command;
+    if (command == "le")
+        instruction.action = TOGGLE;
+    else instruction.action = command == "on" ? TURN_ON : TURN_OFF;
+    cin >> instruction.from;
+    cin.ignore(9); //ignore ' through '
+    cin >> instruction.through;
+
+    return in;
+}
