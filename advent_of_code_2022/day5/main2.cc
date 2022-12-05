@@ -36,7 +36,7 @@ std::vector<std::vector<char>> read_initial_setup()
 
 struct Instruction
 {
-    std::size_t move{};
+    std::ptrdiff_t move{};
     std::size_t from{};
     std::size_t to{};
 };
